@@ -24,31 +24,39 @@ jobs:
           - host: macos-latest
             target: x86_64-apple-darwin
             build: npm run build -- --target x86_64-apple-darwin --platform
+            node_arch: x64
           - host: macos-latest
             target: aarch64-apple-darwin
             build: npm run build -- --target aarch64-apple-darwin --platform
+            node_arch: arm64
           - host: ubuntu-latest
             target: x86_64-unknown-linux-gnu
             build: npm run build -- --target x86_64-unknown-linux-gnu --platform
+            node_arch: x64
           - host: ubuntu-24.04-arm
             target: aarch64-unknown-linux-gnu
             build: npm run build -- --target aarch64-unknown-linux-gnu --platform
+            node_arch: arm64
           - host: ubuntu-latest
             target: x86_64-unknown-linux-musl
             build: npm run build -- --target x86_64-unknown-linux-musl --cross-compile --platform
             test_docker: oven/bun:alpine
             test_platform: linux/amd64
+            node_arch: x64
           - host: ubuntu-24.04-arm
             target: aarch64-unknown-linux-musl
             build: npm run build -- --target aarch64-unknown-linux-musl --cross-compile --platform
             test_docker: oven/bun:alpine
             test_platform: linux/arm64
+            node_arch: arm64
           - host: windows-latest
             target: x86_64-pc-windows-msvc
             build: npm run build -- --target x86_64-pc-windows-msvc --platform
+            node_arch: x64
           - host: windows-11-arm
             target: aarch64-pc-windows-msvc
             build: npm run build -- --target aarch64-pc-windows-msvc --platform
+            node_arch: arm64
 
     name: stable - ${{ matrix.settings.target }} - node@20
     runs-on: ${{ matrix.settings.host }}
@@ -59,6 +67,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          architecture: ${{ matrix.settings.node_arch }}
 
       - name: Install Bun
         uses: oven-sh/setup-bun@v2
@@ -98,7 +107,7 @@ jobs:
         shell: bash
         run: |
           cp *.node captcha.node
-          bun run test
+          npm run test
           rm -f captcha.node
         working-directory: ${{ inputs.working-directory }}
 
