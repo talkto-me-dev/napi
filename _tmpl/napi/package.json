@@ -4,11 +4,11 @@
   "description": "",
   "main": "index.js",
   "exports": {
-    ".": "./index.js"
+    ".": "./index.js",
+    "./*": "./*"
   },
   "files": [
-    "index.js",
-    "_tmpl.node"
+    "index.js"
   ],
   "napi": {
     "binaryName": "_tmpl",

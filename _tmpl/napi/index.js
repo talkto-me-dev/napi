@@ -1,4 +1,54 @@
-import { createRequire } from 'node:module';
-const require = createRequire(import.meta.url);
-const binding = require('./_tmpl.node');
-export const { _tmpl } = binding;
+import { createRequire } from 'node:module'
+import { platform, arch, report } from 'node:process'
+import { readFileSync } from 'node:fs'
+
+const require = createRequire(import.meta.url),
+  isMusl = () => {
+    if (!report || typeof report.getReport !== 'function') {
+      try {
+        return (
+          readFileSync('/bin/ls', 'utf8').includes('libc.musl-') ||
+          readFileSync('/lib/libc.musl-x86_64.so.1', 'utf8').includes('libc.musl-')
+        )
+      } catch {
+        return true
+      }
+    }
+    const { header } = report.getReport()
+    return header && header.glibcVersionRuntime === null
+  }
+
+let binding
+try {
+  binding = require('./_tmpl.node')
+} catch {
+  const pkgName =
+    '@3-/_tmpl-' +
+    platform +
+    '-' +
+    arch +
+    (platform === 'linux'
+      ? isMusl()
+        ? '-musl'
+        : '-gnu'
+      : platform === 'win32'
+        ? '-msvc'
+        : '')
+
+  try {
+    binding = require(pkgName)
+  } catch (err) {
+    throw new Error(
+      'Unsupported OS: ' +
+        platform +
+        ', architecture: ' +
+        arch +
+        '. Failed to load native binding ' +
+        pkgName +
+        '. Error: ' +
+        err.message
+    )
+  }
+}
+
+export const { _tmpl } = binding
