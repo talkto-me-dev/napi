@@ -38,4 +38,4 @@ try {
   }
 }
 
-export const { _tmpl } = binding
+export default binding._tmpl

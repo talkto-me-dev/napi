@@ -1,5 +1,5 @@
 import { test, expect } from 'vitest'
-import { captcha } from './index.js'
+import captcha from './index.js'
 import verify from './verify.js'
 
 test('captcha and verify', async () => {

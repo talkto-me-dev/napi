@@ -27,7 +27,7 @@ const snake = project.replaceAll('-', '_'),
     'Cargo.toml': subS,
     'lib.rs': subS,
     'index.test.js': subS,
-    'index.js': (c) => subP(c).replaceAll('export const { ' + project + ' }', 'export const { ' + snake + ' }')
+    'index.js': (c) => subP(c).replaceAll('export default binding.' + project, 'export default binding.' + snake)
   },
   proc = (path) => {
     const content = read(path),

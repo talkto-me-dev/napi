@@ -38,4 +38,4 @@ try {
   }
 }
 
-export const { captcha } = binding
+export default binding.captcha
