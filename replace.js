@@ -27,7 +27,7 @@ const snake = project.replaceAll('-', '_'),
     'Cargo.toml': subS,
     'lib.rs': subS,
     'index.test.js': subS,
-    'index.js': (c) => subS(c).replaceAll(snake + '.node', project + '.node')
+    'index.js': (c) => subP(c).replaceAll('export const { ' + project + ' }', 'export const { ' + snake + ' }')
   },
   proc = (path) => {
     const content = read(path),
