@@ -56,7 +56,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: bun
           
       - name: Install Bun
         uses: oven-sh/setup-bun@v1
@@ -114,7 +113,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: bun
           
       - name: Install Bun
         uses: oven-sh/setup-bun@v1
