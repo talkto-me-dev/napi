@@ -5,4 +5,4 @@
  *
  * 异步生成验证码。
  */
-export declare function captcha(w: number, h: number, num: number): Promise<[Buffer, Array<string>, Array<number[]>]>
+export declare function captcha(w: number, h: number, num: number): Promise<[Uint8Array, Array<string>, Array<number[]>]>
