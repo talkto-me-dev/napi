@@ -1,0 +1,4 @@
+*.node
+*.lock
+/.dev
+node_modules/
