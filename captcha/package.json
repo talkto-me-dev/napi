@@ -43,7 +43,7 @@
     "artifacts": "napi artifacts",
     "build": "napi build --release",
     "build:debug": "napi build",
-    "prepublishOnly": "napi prepublish -t npm --gh-release false",
+    "prepublishOnly": "napi prepublish -t npm",
     "test": "vitest run",
     "version": "napi version"
   },
