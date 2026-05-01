@@ -4,9 +4,8 @@ const STATE_LOADING = 0,
   STATE_SUCCESS = 3,
   STATE_FAIL = 4,
   ICON_N = 3,
-  BADGE_R = 12;
-
-const decode = (buf) => {
+  BADGE_R = 12,
+  decode = (buf) => {
   const dv = new DataView(buf),
     decoder = new TextDecoder();
   let offset = 0;
