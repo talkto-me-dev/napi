@@ -1,14 +1,11 @@
 name: Publish @3-/captcha
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - "captcha/**"
-      - ".github/workflows/captcha-publish.yml"
-      - ".github/workflows/napi-publish-template.yml"
   workflow_dispatch:
+
+permissions:
+  contents: write
+  id-token: write
 
 jobs:
   napi-publish:
