@@ -1,0 +1,23 @@
+{
+  "name": "@3-/captcha-linux-x64-musl",
+  "version": "0.1.14",
+  "os": [
+    "linux"
+  ],
+  "cpu": [
+    "x64"
+  ],
+  "files": [
+    "captcha.linux-x64-musl.node"
+  ],
+  "description": "Native binary package for @3-/captcha-linux-x64-musl",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/talkto-me-dev/napi.git"
+  },
+  "license": "MulanPSL-2.0",
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "captcha.linux-x64-musl.node"
+}
