@@ -1,9 +1,9 @@
 use axum::{
+    Router,
     extract::{Json, State},
     http::header,
     response::IntoResponse,
     routing::{get, post},
-    Router,
 };
 use papaya::HashMap;
 use serde::Deserialize;
@@ -55,34 +55,31 @@ async fn captcha_handler(State(state): State<AppState>) -> impl IntoResponse {
 
     let mut webp_bytes = cap.webp.into_vec();
     let cap_icons = cap.icons;
-    
+
     let mut buf = Vec::with_capacity(
         8 + 1 + cap_icons.iter().map(|s| 2 + s.len()).sum::<usize>() + webp_bytes.len(),
     );
-    
+
     // 8 bytes id
     // 8 字节验证码 ID
     buf.extend_from_slice(&id.to_le_bytes());
-    
+
     // 1 byte tips_count
     // 1 字节提示图标数量
     buf.push(cap_icons.len() as u8);
-    
+
     // tips length and data
     // 提示图标的长度和数据
     for icon in cap_icons {
         buf.extend_from_slice(&(icon.len() as u16).to_le_bytes());
         buf.extend_from_slice(icon.as_bytes());
     }
-    
+
     // webp bytes
     // WebP 图像数据
     buf.append(&mut webp_bytes);
 
-    (
-        [(header::CONTENT_TYPE, "application/octet-stream")],
-        buf,
-    )
+    ([(header::CONTENT_TYPE, "application/octet-stream")], buf)
 }
 
 async fn verify_handler(
