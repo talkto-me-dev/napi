@@ -204,7 +204,7 @@ pub fn render(w: u32, h: u32, num: usize) -> Captcha {
     let bg_l = if is_dark { [20, 40] } else { [85, 95] };
     let icon_l = if is_dark { [70, 90] } else { [15, 35] };
 
-    let total_count = num + fastrand::usize(1..4);
+    let total_count = num + fastrand::usize(3..7);
 
     let mut all_positions: Vec<(i32, i32, u32)> = Vec::with_capacity(total_count);
 
