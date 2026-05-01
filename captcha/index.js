@@ -21,25 +21,15 @@ let binding
 try {
   binding = require('./captcha.node')
 } catch {
-  const isWindows = platform === 'win32',
-    isMac = platform === 'darwin',
-    isLinux = platform === 'linux',
-    isX64 = arch === 'x64',
-    isArm64 = arch === 'arm64'
+  const pkgName = `@3-/captcha-${platform}-${arch}${
+    platform === 'linux' ? (isMusl() ? '-musl' : '-gnu') : platform === 'win32' ? '-msvc' : ''
+  }`
 
-  let pkgName = ''
-  if (isWindows && isX64) pkgName = '@3-/captcha-win32-x64-msvc'
-  else if (isWindows && isArm64) pkgName = '@3-/captcha-win32-arm64-msvc'
-  else if (isMac && isX64) pkgName = '@3-/captcha-darwin-x64'
-  else if (isMac && isArm64) pkgName = '@3-/captcha-darwin-arm64'
-  else if (isLinux && isX64) pkgName = isMusl() ? '@3-/captcha-linux-x64-musl' : '@3-/captcha-linux-x64-gnu'
-  else if (isLinux && isArm64) pkgName = isMusl() ? '@3-/captcha-linux-arm64-musl' : '@3-/captcha-linux-arm64-gnu'
-
-  if (!pkgName) {
-    throw new Error(`Unsupported OS: ${platform}, architecture: ${arch}`)
+  try {
+    binding = require(pkgName)
+  } catch (err) {
+    throw new Error(`Unsupported OS: ${platform}, architecture: ${arch}. Failed to load native binding ${pkgName}. Error: ${err.message}`)
   }
-  
-  binding = require(pkgName)
 }
 
 export const { captcha } = binding
