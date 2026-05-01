@@ -1,9 +1,5 @@
 name: Publish @3-/captcha
 
-env:
-  DEBUG: napi:*
-  MACOSX_DEPLOYMENT_TARGET: "10.13"
-
 on:
   push:
     branches:
@@ -11,6 +7,7 @@ on:
     paths:
       - "captcha/**"
       - ".github/workflows/captcha-publish.yml"
+      - ".github/workflows/napi-publish-template.yml"
   workflow_dispatch:
 
 jobs:
