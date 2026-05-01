@@ -1,16 +1,16 @@
-name: Publish Captcha
+name: Publish @3-/captcha
 
 env:
   DEBUG: napi:*
-  MACOSX_DEPLOYMENT_TARGET: '10.13'
+  MACOSX_DEPLOYMENT_TARGET: "10.13"
 
 on:
   push:
     branches:
       - main
     paths:
-      - 'captcha/**'
-      - '.github/workflows/captcha-publish.yml'
+      - "captcha/**"
+      - ".github/workflows/captcha-publish.yml"
   workflow_dispatch:
 
 jobs:
@@ -51,28 +51,28 @@ jobs:
     runs-on: ${{ matrix.settings.host }}
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Setup node
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          
+
       - name: Install Bun
         uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
-          
+
       - name: Install Rust
         uses: dtolnay/rust-toolchain@stable
         with:
           toolchain: stable
           targets: ${{ matrix.settings.target }}
-          
+
       - name: Rust Cache
         uses: Swatinem/rust-cache@v2
         with:
-          workspaces: 'captcha -> target'
-          
+          workspaces: "captcha -> target"
+
       - name: Install cargo-zigbuild
         if: ${{ matrix.settings.target == 'aarch64-unknown-linux-musl' }}
         run: pip3 install cargo-zigbuild
@@ -80,26 +80,26 @@ jobs:
       - name: Install dependencies
         run: bun install
         working-directory: captcha
-        
+
       - name: Build in docker
         uses: addnab/docker-run-action@v3
         if: ${{ matrix.settings.docker }}
         with:
           image: ${{ matrix.settings.docker }}
-          options: '--user 0:0 -v ${{ github.workspace }}/.cargo-cache/git/db:/usr/local/cargo/git/db -v ${{ github.workspace }}/.cargo/registry/cache:/usr/local/cargo/registry/cache -v ${{ github.workspace }}/.cargo/registry/index:/usr/local/cargo/registry/index -v ${{ github.workspace }}:/build -w /build/captcha'
+          options: "--user 0:0 -v ${{ github.workspace }}/.cargo-cache/git/db:/usr/local/cargo/git/db -v ${{ github.workspace }}/.cargo/registry/cache:/usr/local/cargo/registry/cache -v ${{ github.workspace }}/.cargo/registry/index:/usr/local/cargo/registry/index -v ${{ github.workspace }}:/build -w /build/captcha"
           run: ${{ matrix.settings.build }}
-          
+
       - name: Build
         run: ${{ matrix.settings.build }}
         if: ${{ !matrix.settings.docker }}
         working-directory: captcha
-        
+
       - name: Run Tests
         # 测试在原生环境中执行
         if: ${{ !matrix.settings.docker }}
         run: bun run test
         working-directory: captcha
-        
+
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
@@ -117,30 +117,30 @@ jobs:
       id-token: write
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Setup node
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          
+
       - name: Install Bun
         uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
-          
+
       - name: Install dependencies
         run: bun install
         working-directory: captcha
-        
+
       - name: Download all artifacts
         uses: actions/download-artifact@v4
         with:
           path: captcha/artifacts
-          
+
       - name: Move artifacts
         run: bun run artifacts
         working-directory: captcha
-        
+
       - name: Publish NPM Package
         run: |
           npm publish --provenance --access public

@@ -1,6 +1,6 @@
 import { test, expect } from 'vitest'
 import { captcha } from './index.js'
-import { verify } from './verify.js'
+import verify from './verify.js'
 
 test('captcha and verify', async () => {
   const [webp, icons, positions] = await captcha(400, 300, 3)

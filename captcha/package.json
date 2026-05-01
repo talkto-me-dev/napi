@@ -5,13 +5,13 @@
   "main": "index.js",
   "exports": {
     ".": "./index.js",
-    "./verify": "./verify.js",
-    "./verify.js": "./verify.js"
+    "./*": "./*"
   },
   "files": [
     "index.js",
+    "index.d.ts",
     "verify.js",
-    "captcha.node"
+    "verify.d.ts"
   ],
   "napi": {
     "binaryName": "captcha",
