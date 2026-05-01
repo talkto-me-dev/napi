@@ -6,9 +6,7 @@ on:
       working-directory:
         required: true
         type: string
-    secrets:
-      NODE_AUTH_TOKEN:
-        required: false
+
 
 env:
   DEBUG: napi:*
@@ -115,7 +113,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          registry-url: "https://registry.npmjs.org"
 
       - name: Install Bun
         uses: oven-sh/setup-bun@v2
@@ -146,6 +143,5 @@ jobs:
             fi
           done
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
           GITHUB_TOKEN: ${{ github.token }}
         working-directory: ${{ inputs.working-directory }}
