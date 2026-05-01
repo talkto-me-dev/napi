@@ -1,0 +1,51 @@
+{
+  "name": "@3-/_tmpl",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js",
+    "./*": "./*"
+  },
+  "files": [
+    "index.js"
+  ],
+  "napi": {
+    "binaryName": "_tmpl",
+    "package": {
+      "name": "@3-/_tmpl"
+    },
+    "targets": [
+      "aarch64-apple-darwin",
+      "x86_64-apple-darwin",
+      "x86_64-unknown-linux-gnu",
+      "aarch64-unknown-linux-gnu",
+      "x86_64-unknown-linux-musl",
+      "aarch64-unknown-linux-musl",
+      "x86_64-pc-windows-msvc",
+      "aarch64-pc-windows-msvc"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/talkto-me-dev/napi.git"
+  },
+  "bugs": {
+    "url": "https://github.com/talkto-me-dev/napi/issues"
+  },
+  "homepage": "https://github.com/talkto-me-dev/napi#readme",
+  "license": "MulanPSL-2.0",
+  "type": "module",
+  "scripts": {
+    "artifacts": "napi artifacts",
+    "build": "napi build --release",
+    "build:debug": "napi build",
+    "prepublishOnly": "napi prepublish -t npm",
+    "test": "vitest run",
+    "version": "napi version"
+  },
+  "devDependencies": {
+    "@napi-rs/cli": "^3.0.0",
+    "vitest": "^3.0.7"
+  }
+}
