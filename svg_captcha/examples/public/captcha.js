@@ -6,6 +6,35 @@ const STATE_LOADING = 0,
   ICON_N = 3,
   BADGE_R = 12;
 
+const decode = (buf) => {
+  const dv = new DataView(buf),
+    decoder = new TextDecoder();
+  let offset = 0;
+
+  // Data format:
+  // [8 bytes] id (u64, little endian)
+  // [1 byte] tips_count
+  // [tips_count times] [2 bytes length (u16 le)] [svg bytes]
+  // [remaining bytes] webp image
+
+  const id = dv.getBigUint64(offset, true).toString();
+  offset += 8;
+
+  const tip_count = dv.getUint8(offset++);
+  const tips = [];
+  for (let i = 0; i < tip_count; i++) {
+    const tip_len = dv.getUint16(offset, true);
+    offset += 2;
+    tips.push(decoder.decode(new Uint8Array(buf, offset, tip_len)));
+    offset += tip_len;
+  }
+
+  const bytes = new Uint8Array(buf, offset),
+    blob = new Blob([bytes], { type: "image/webp" });
+
+  return { id, tips, blob };
+};
+
 export default (root, onSuccess) => {
   const find = (s) => root.querySelector(s),
     findAll = (s) => root.querySelectorAll(s),
@@ -112,12 +141,10 @@ export default (root, onSuccess) => {
 
       try {
         const res = await fetch("/api/captcha"),
-          { id, tip, img } = await res.json(),
-          bytes = new Uint8Array(img),
-          blob = new Blob([bytes], { type: "image/webp" });
+          buf = await res.arrayBuffer(),
+          { id, tips, blob } = decode(buf);
 
         captcha_id = id;
-        const tips = tip || [];
 
         // precompute data URIs to avoid re-encoding on every update
         // 预计算 data URI，避免每次 update 重复编码
