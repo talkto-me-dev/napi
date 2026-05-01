@@ -1,42 +1,36 @@
-import { createRequire } from 'node:module'
-import { platform, arch } from 'node:process'
-import { existsSync } from 'node:fs'
+import { createRequire } from "node:module";
+import { platform, arch } from "node:process";
+import { existsSync } from "node:fs";
 
 const require = createRequire(import.meta.url),
-  isMusl = () => existsSync('/lib/ld-musl-' + (arch === 'x64' ? 'x86_64' : 'aarch64') + '.so.1')
+  isMusl = () => existsSync("/lib/ld-musl-" + (arch === "x64" ? "x86_64" : "aarch64") + ".so.1");
 
-let binding
+let binding;
 try {
-  binding = require('./captcha.node')
+  binding = require("./captcha.node");
 } catch {
   const pkgName =
-    '@3-/captcha-' +
+    "@3-/captcha-" +
     platform +
-    '-' +
+    "-" +
     arch +
-    (platform === 'linux'
-      ? isMusl()
-        ? '-musl'
-        : '-gnu'
-      : platform === 'win32'
-        ? '-msvc'
-        : '')
+    (platform === "linux" ? (isMusl() ? "-musl" : "-gnu") : platform === "win32" ? "-msvc" : "");
 
   try {
-    binding = require(pkgName)
+    binding = require(pkgName);
   } catch (err) {
     throw new Error(
-      'Unsupported OS: ' +
+      "Unsupported OS: " +
         platform +
-        ', architecture: ' +
+        ", architecture: " +
         arch +
-        '. Failed to load native binding ' +
+        ". Failed to load native binding " +
         pkgName +
-        '. Error: ' +
-        err.message
-    )
+        ". Error: " +
+        err.message,
+    );
   }
 }
 
-export const {captcha} = binding
-export default captcha
+export const { captcha } = binding;
+export default captcha;

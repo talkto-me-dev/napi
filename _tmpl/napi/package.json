@@ -2,15 +2,37 @@
   "name": "@3-/_tmpl",
   "version": "0.1.0",
   "description": "",
-  "main": "index.js",
-  "exports": {
-    ".": "./index.js",
-    "./*": "./*"
+  "homepage": "https://github.com/talkto-me-dev/napi#readme",
+  "bugs": {
+    "url": "https://github.com/talkto-me-dev/napi/issues"
+  },
+  "license": "MulanPSL-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/talkto-me-dev/napi.git"
   },
   "files": [
     "index.js",
     "index.d.ts"
   ],
+  "type": "module",
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js",
+    "./*": "./*"
+  },
+  "scripts": {
+    "artifacts": "napi artifacts",
+    "build": "napi build --release",
+    "build:debug": "napi build",
+    "prepublishOnly": "napi prepublish -t npm",
+    "test": "vitest run",
+    "version": "napi version"
+  },
+  "devDependencies": {
+    "@napi-rs/cli": "^3.0.0",
+    "vitest": "^3.0.7"
+  },
   "napi": {
     "binaryName": "_tmpl",
     "package": {
@@ -26,27 +48,5 @@
       "x86_64-pc-windows-msvc",
       "aarch64-pc-windows-msvc"
     ]
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/talkto-me-dev/napi.git"
-  },
-  "bugs": {
-    "url": "https://github.com/talkto-me-dev/napi/issues"
-  },
-  "homepage": "https://github.com/talkto-me-dev/napi#readme",
-  "license": "MulanPSL-2.0",
-  "type": "module",
-  "scripts": {
-    "artifacts": "napi artifacts",
-    "build": "napi build --release",
-    "build:debug": "napi build",
-    "prepublishOnly": "napi prepublish -t npm",
-    "test": "vitest run",
-    "version": "napi version"
-  },
-  "devDependencies": {
-    "@napi-rs/cli": "^3.0.0",
-    "vitest": "^3.0.7"
   }
 }

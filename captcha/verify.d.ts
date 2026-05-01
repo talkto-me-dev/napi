@@ -7,5 +7,5 @@
  */
 export default function verify(
   clicks: Array<[number, number]>,
-  positions: Array<[number, number, number]>
-): boolean
+  positions: Array<[number, number, number]>,
+): boolean;

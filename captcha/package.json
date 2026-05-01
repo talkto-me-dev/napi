@@ -2,10 +2,14 @@
   "name": "@3-/captcha",
   "version": "0.1.35",
   "description": "",
-  "main": "index.js",
-  "exports": {
-    ".": "./index.js",
-    "./*": "./*"
+  "homepage": "https://github.com/talkto-me-dev/napi#readme",
+  "bugs": {
+    "url": "https://github.com/talkto-me-dev/napi/issues"
+  },
+  "license": "MulanPSL-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/talkto-me-dev/napi.git"
   },
   "files": [
     "index.js",
@@ -13,32 +17,12 @@
     "verify.js",
     "verify.d.ts"
   ],
-  "napi": {
-    "binaryName": "captcha",
-    "package": {
-      "name": "@3-/captcha"
-    },
-    "targets": [
-      "aarch64-apple-darwin",
-      "x86_64-apple-darwin",
-      "x86_64-unknown-linux-gnu",
-      "aarch64-unknown-linux-gnu",
-      "x86_64-unknown-linux-musl",
-      "aarch64-unknown-linux-musl",
-      "x86_64-pc-windows-msvc",
-      "aarch64-pc-windows-msvc"
-    ]
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/talkto-me-dev/napi.git"
-  },
-  "bugs": {
-    "url": "https://github.com/talkto-me-dev/napi/issues"
-  },
-  "homepage": "https://github.com/talkto-me-dev/napi#readme",
-  "license": "MulanPSL-2.0",
   "type": "module",
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js",
+    "./*": "./*"
+  },
   "scripts": {
     "artifacts": "napi artifacts",
     "build": "napi build --release",
@@ -54,11 +38,27 @@
   "optionalDependencies": {
     "@3-/captcha-darwin-arm64": "0.1.35",
     "@3-/captcha-darwin-x64": "0.1.35",
-    "@3-/captcha-linux-x64-gnu": "0.1.35",
     "@3-/captcha-linux-arm64-gnu": "0.1.35",
-    "@3-/captcha-linux-x64-musl": "0.1.35",
     "@3-/captcha-linux-arm64-musl": "0.1.35",
-    "@3-/captcha-win32-x64-msvc": "0.1.35",
-    "@3-/captcha-win32-arm64-msvc": "0.1.35"
+    "@3-/captcha-linux-x64-gnu": "0.1.35",
+    "@3-/captcha-linux-x64-musl": "0.1.35",
+    "@3-/captcha-win32-arm64-msvc": "0.1.35",
+    "@3-/captcha-win32-x64-msvc": "0.1.35"
+  },
+  "napi": {
+    "binaryName": "captcha",
+    "package": {
+      "name": "@3-/captcha"
+    },
+    "targets": [
+      "aarch64-apple-darwin",
+      "x86_64-apple-darwin",
+      "x86_64-unknown-linux-gnu",
+      "aarch64-unknown-linux-gnu",
+      "x86_64-unknown-linux-musl",
+      "aarch64-unknown-linux-musl",
+      "x86_64-pc-windows-msvc",
+      "aarch64-pc-windows-msvc"
+    ]
   }
 }

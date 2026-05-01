@@ -1,7 +1,7 @@
 [workspace]
 resolver = "2"
-members = [ "captcha", "svg_captcha" ]
-exclude = [ "_tmpl" ]
+members = ["captcha", "svg_captcha"]
+exclude = ["_tmpl"]
 
 [profile.release]
 lto = true

@@ -179,12 +179,32 @@ jobs:
 
       - name: Publish NPM Package
         run: |
-          # prepublishOnly script in package.json handles napi prepublish
-          npm publish --provenance --access public
+          # Function to check if package version exists
+          is_published() {
+            local dir=$1
+            local pkg_name=$(node -p "require('$(pwd)/${dir}/package.json').name")
+            local pkg_version=$(node -p "require('$(pwd)/${dir}/package.json').version")
+            if npm info "${pkg_name}@${pkg_version}" > /dev/null 2>&1; then
+              return 0
+            else
+              return 1
+            fi
+          }
+
+          if is_published "."; then
+            echo "Main package already published. Skipping."
+          else
+            npm publish --provenance --access public
+          fi
+
           for dir in npm/*; do
             if [ -d "$dir" ]; then
-              echo "Publishing $dir..."
-              npm publish "./$dir" --provenance --access public
+              if is_published "$dir"; then
+                echo "Package in $dir already published. Skipping."
+              else
+                echo "Publishing $dir..."
+                npm publish "./$dir" --provenance --access public
+              fi
             fi
           done
         env:

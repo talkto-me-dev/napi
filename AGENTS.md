@@ -3,7 +3,7 @@
 性能最大化,能在编译期确定的，就要避免运行时开销
 用到的模块、函数都尽量在文件开头导入
 对于模块内部用的结构体，直接曝光字段，而不是写包装函数
-use 要写明具体的导入模块, 禁止用 use *
+use 要写明具体的导入模块, 禁止用 use \*
 错误都用 thiserror 在 src/error.rs 中定义，并定义 Result，在 lib.rs 中 `use error::{Result, Error};`，避免使用字符串作为错误
 用 as 等数字转换要小心静默失败，但是要是 100%确定没问题，就不用 try_into，大胆用 as 提高性能
 禁止使用 panic
@@ -22,13 +22,16 @@ use 要写明具体的导入模块, 禁止用 use *
 如果需要一个并发读写的字典, 用 papaya
 ./src/ 中公开函数和结构体都在 ./src/lib.rs 导出，禁止 pub 模块（pub mod consts; 除外），而是 pub use 模块::{函数,结构体}; 内部用的用 pub(crate) ; 禁止 pub use 第三方库的函数
 日志用 log；测试中用下面代码初始化日志显示
+
 ```
 #[static_init::constructor(0)]
 extern "C" fn _log_init() {
   log_init::init();
 }
 ```
+
 Cargo.toml 的 edition 用 2024, rust 用最新的函数、库（不用旧写法），比如：
+
 - 支持 let-chain 语法
 - 标准库的 fs 支持 try_lock
 - trait 支持返回 impl Future 的方式定义异步函数

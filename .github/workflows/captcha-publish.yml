@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     tags:
-      - 'captcha@*'
+      - "captcha@*"
 
 permissions:
   contents: write
