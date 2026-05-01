@@ -1,22 +1,9 @@
 import { createRequire } from 'node:module'
-import { platform, arch, report } from 'node:process'
-import { readFileSync } from 'node:fs'
+import { platform, arch } from 'node:process'
+import { existsSync } from 'node:fs'
 
 const require = createRequire(import.meta.url),
-  isMusl = () => {
-    if (!report || typeof report.getReport !== 'function') {
-      try {
-        return (
-          readFileSync('/bin/ls', 'utf8').includes('libc.musl-') ||
-          readFileSync('/lib/libc.musl-x86_64.so.1', 'utf8').includes('libc.musl-')
-        )
-      } catch {
-        return true
-      }
-    }
-    const { header } = report.getReport()
-    return header && header.glibcVersionRuntime === null
-  }
+  isMusl = () => existsSync('/lib/ld-musl-' + (arch === 'x64' ? 'x86_64' : 'aarch64') + '.so.1')
 
 let binding
 try {
