@@ -142,8 +142,8 @@ jobs:
 
       - name: Publish NPM Package
         run: |
-          # Use --gh-release false to avoid "already_exists" error during retries
-          npm publish --provenance --access public -- --gh-release false
+          # prepublishOnly script in package.json handles --gh-release false
+          npm publish --provenance --access public
           for dir in npm/*; do
             if [ -d "$dir" ]; then
               echo "Publishing $dir..."
