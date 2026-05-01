@@ -2,6 +2,8 @@
 
 use error::Error;
 use napi::bindgen_prelude::Uint8Array;
+use napi::tokio::task::spawn_blocking;
+use napi::{Error as NapiError, Result};
 use napi_derive::napi;
 mod error;
 
@@ -13,11 +15,11 @@ pub async fn captcha(
     w: u32,
     h: u32,
     num: u32,
-) -> napi::Result<(Uint8Array, Vec<&'static str>, Vec<[i32; 3]>)> {
-    let output = napi::tokio::task::spawn_blocking(move || svg_captcha::render(w, h, num as usize))
+) -> Result<(Uint8Array, Vec<&'static str>, Vec<[i32; 3]>)> {
+    let output = spawn_blocking(move || svg_captcha::render(w, h, num as usize))
         .await
-        .map_err(|e| napi::Error::from_reason(e.to_string()))?
-        .map_err(|e| napi::Error::from(Error::from(e)))?;
+        .map_err(|e| NapiError::from_reason(e.to_string()))?
+        .map_err(|e| NapiError::from(Error::from(e)))?;
 
     let positions = output
         .positions
