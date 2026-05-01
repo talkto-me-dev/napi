@@ -25,7 +25,7 @@ pub struct Captcha {
     /// The selected icons.
     ///
     /// 选中的图标。
-    pub icons: Vec<String>,
+    pub icons: Vec<&'static str>,
     /// The positions of the icons in the format `(x, y, size)`.
     ///
     /// 图标的位置，格式为 `(x, y, size)`。
@@ -36,12 +36,7 @@ pub struct Captcha {
 ///
 /// 生成指定宽度、高度和目标图标数量的验证码，并将其转换为 WebP。
 pub fn render(w: u32, h: u32, num: usize) -> Result<Captcha> {
-    let captcha = render_svg(w, h, num);
-    let webp = svg2webp::svg2webp(&captcha.svg)?;
-    Ok(Captcha {
-        svg: captcha.svg,
-        webp,
-        icons: captcha.icons,
-        positions: captcha.positions,
-    })
+    let mut captcha = render_svg(w, h, num);
+    captcha.webp = svg2webp::svg2webp(&captcha.svg)?;
+    Ok(captcha)
 }

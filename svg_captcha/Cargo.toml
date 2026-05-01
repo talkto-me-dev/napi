@@ -19,9 +19,6 @@ rustdoc-args = ["--cfg", "docsrs"]
 
 [dependencies]
 fastrand = "2.4.1"
-hipstr = "0.8.0"
-log = "0.4.29"
-static_init = "1.0.4"
 svg2webp = "0.1.15"
 thiserror = "2.0.18"
 

@@ -6,12 +6,16 @@ use axum::{
 use papaya::HashMap;
 use serde::{Deserialize, Serialize};
 use std::sync::Arc;
+use tokio::net::TcpListener;
+use tower_http::services::ServeDir;
 
 use svg_captcha::render;
 
+type CaptchaStore = Arc<HashMap<String, Vec<(i32, i32, u32)>>>;
+
 #[derive(Clone)]
 struct AppState {
-    captchas: Arc<HashMap<String, Vec<(i32, i32, u32)>>>,
+    captchas: CaptchaStore,
 }
 
 #[derive(Deserialize)]
@@ -24,7 +28,7 @@ struct VerifyRequest {
 struct CaptchaResponse {
     id: String,
     img: Vec<u8>,
-    tip: Vec<String>, // Return the SVG raw strings as an array
+    tip: Vec<&'static str>,
 }
 
 #[tokio::main]
@@ -36,10 +40,10 @@ async fn main() {
     let app = Router::new()
         .route("/api/captcha", get(captcha_handler))
         .route("/api/verify", post(verify_handler))
-        .fallback_service(tower_http::services::ServeDir::new("examples/public"))
+        .fallback_service(ServeDir::new("examples/public"))
         .with_state(state);
 
-    let listener = tokio::net::TcpListener::bind("0.0.0.0:3000").await.unwrap();
+    let listener = TcpListener::bind("0.0.0.0:3000").await.unwrap();
     println!("Listening on http://localhost:3000");
     axum::serve(listener, app).await.unwrap();
 }

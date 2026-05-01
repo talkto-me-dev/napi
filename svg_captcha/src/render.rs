@@ -24,10 +24,17 @@ impl Hsl {
     }
 }
 
+/// Normalizes hue to [0, 360).
+///
+/// 将色相归一化到 [0, 360)。
+#[inline]
 fn hue_norm(h: i32) -> u16 {
     h.rem_euclid(360) as u16
 }
 
+/// Generates a harmonious color palette.
+///
+/// 生成和谐的配色方案。
 fn palette() -> Vec<Hsl> {
     let h = fastrand::u16(0..360);
     let s = fastrand::u8(60..91);
@@ -48,15 +55,21 @@ fn palette() -> Vec<Hsl> {
     colors
 }
 
+/// Generates a gradient definition.
+///
+/// 生成渐变定义。
 fn grad(id: &str, h: u16, l_min: u8, l_max: u8, op: f32, seg: u8) -> String {
     let s = fastrand::u8(75..96);
-    let mut stops = String::with_capacity(128);
+    let mut stops = String::with_capacity(256);
     if seg < 2 {
         for (i, &v) in [0.0, 0.5, 1.0].iter().enumerate() {
             let hh = hue_norm(h as i32 + i as i32 * 15);
             let ll = (l_min as f32 + (l_max as f32 - l_min as f32) * v) as u8;
-            let c = format!("hsl({hh},{s}%,{ll}%)");
-            stops.push_str(&tmpl::stop(v * 100.0, &c, op));
+            let offset = v * 100.0;
+            let _ = write!(
+                stops,
+                r#"<stop offset="{offset}%" stop-color="hsl({hh},{s}%,{ll}%)" stop-opacity="{op}"/>"#
+            );
         }
     } else {
         for i in 0..seg {
@@ -66,11 +79,16 @@ fn grad(id: &str, h: u16, l_min: u8, l_max: u8, op: f32, seg: u8) -> String {
             } else {
                 fastrand::u8(l_max - 15..l_max + 1)
             };
-            let c = format!("hsl({hh},{s}%,{ll}%)");
             let offset1 = (i as f32 * 100.0) / seg as f32;
             let offset2 = ((i + 1) as f32 * 100.0) / seg as f32;
-            stops.push_str(&tmpl::stop(offset1, &c, op));
-            stops.push_str(&tmpl::stop(offset2, &c, op));
+            let _ = write!(
+                stops,
+                r#"<stop offset="{offset1}%" stop-color="hsl({hh},{s}%,{ll}%)" stop-opacity="{op}"/>"#
+            );
+            let _ = write!(
+                stops,
+                r#"<stop offset="{offset2}%" stop-color="hsl({hh},{s}%,{ll}%)" stop-opacity="{op}"/>"#
+            );
         }
     }
     let is_radial = fastrand::bool();
@@ -163,7 +181,9 @@ fn wave_path(points: &[Point], w: u32, h: u32) -> String {
             points[i + 1].y
         );
     }
-    let last = points.last().unwrap();
+    // SAFETY: points always has at least 2 elements
+    // 安全: points 至少有 2 个元素
+    let last = unsafe { points.last().unwrap_unchecked() };
     let _ = write!(d, " C {},{} {w},{h} {w},{h} Z", last.x, last.y);
     d
 }
@@ -327,7 +347,7 @@ pub fn render(w: u32, h: u32, num: usize) -> Captcha {
 
         if i < num {
             positions.push((px, py, icon_sz));
-            selected_icons.push(icon.raw.to_string());
+            selected_icons.push(icon.raw);
         }
 
         defs.push_str(&grad(
