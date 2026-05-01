@@ -2,7 +2,8 @@
 
 set -e
 DIR=$(realpath $0) && DIR=${DIR%/*}
-cd $DIR
+ROOT=$(dirname $DIR)
+cd $ROOT
 set -x
 
 if [ -z "$1" ]; then
@@ -24,31 +25,15 @@ cd "$PROJECT"
 npm version patch --no-git-tag-version
 
 # 获取更新后的版本号
-VERSION=$(node -p "require('./package.json').version")
+# Get the updated version number
+VERSION=$(grep '"version":' package.json | head -n 1 | cut -d'"' -f4)
 
 # 手动同步版本号到 optionalDependencies 和 Cargo.toml
-# napi version 在没有 npm 目录时可能不会更新主 package.json
-node -e "
-const fs = require('fs');
-const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
-const version = pkg.version;
-
-if (pkg.optionalDependencies) {
-  for (const name in pkg.optionalDependencies) {
-    if (name.startsWith('@3-/') || name.startsWith('@napi-rs/')) {
-      pkg.optionalDependencies[name] = version;
-    }
-  }
-  fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2) + '\n');
-}
-
-let cargo = fs.readFileSync('Cargo.toml', 'utf8');
-cargo = cargo.replace(/^version = \".*\"/m, 'version = \"' + version + '\"');
-fs.writeFileSync('Cargo.toml', cargo);
-"
+# Manually sync version to optionalDependencies and Cargo.toml
+bun "$DIR/dist.napi.js"
 
 # 2. 提交并推送更改
-cd "$DIR"
+cd "$ROOT"
 git add "$PROJECT"
 
 # 使用 [skip ci] 避免触发其他工作流
