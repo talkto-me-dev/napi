@@ -5,7 +5,7 @@ import verify from './verify.js'
 test('captcha and verify', async () => {
   const [webp, icons, positions] = await captcha(400, 300, 3)
   
-  expect(webp instanceof Buffer).toBe(true)
+  expect(webp instanceof Uint8Array).toBe(true)
   expect(icons.length).toBe(3)
   expect(positions.length).toBe(3)
   

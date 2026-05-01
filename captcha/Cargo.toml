@@ -1,7 +1,7 @@
 [package]
 edition = "2024"
 name = "captcha"
-version = "0.1.28"
+version = "0.1.29"
 description = "NAPI-RS project template"
 repository = "https://github.com/talkto-me-dev/napi"
 homepage = "https://github.com/talkto-me-dev/napi#readme"
