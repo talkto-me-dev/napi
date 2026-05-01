@@ -10,7 +10,6 @@ on:
       NPM_TOKEN:
         required: false
 
-
 env:
   DEBUG: napi:*
   MACOSX_DEPLOYMENT_TARGET: "11.0"
@@ -102,6 +101,7 @@ jobs:
       - name: Build
         run: ${{ matrix.settings.build }}
         working-directory: ${{ inputs.working-directory }}
+
       - name: Run Tests (Native)
         if: ${{ !matrix.settings.test_docker }}
         shell: bash
@@ -145,7 +145,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          registry-url: 'https://registry.npmjs.org/'
+          registry-url: "https://registry.npmjs.org/"
 
       - name: Install Bun
         uses: oven-sh/setup-bun@v2

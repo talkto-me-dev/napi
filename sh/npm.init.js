@@ -73,23 +73,23 @@ const pkgExists = async (name) => {
 };
 
 // 获取 repo 路径
-const repoPath = async () => {
-  try {
-    const url = await $({ cwd })`git remote get-url origin`;
-    return url.stdout
-      .trim()
-      .split(":")
-      .pop()
-      .replace(/\.git$/, "")
-      .replace("443/", "");
-  } catch (err) {
-    console.warn("无法获取 git 仓库地址:", err.message);
-    return "";
-  }
-};
+// const repoPath = async () => {
+//   try {
+//     const url = await $({ cwd })`git remote get-url origin`;
+//     return url.stdout
+//       .trim()
+//       .split(":")
+//       .pop()
+//       .replace(/\.git$/, "")
+//       .replace("443/", "");
+//   } catch (err) {
+//     console.warn("无法获取 git 仓库地址:", err.message);
+//     return "";
+//   }
+// };
 
-const repo = await repoPath(),
-  workflow = main_name.split("/").pop() + "-publish.yml";
+// const repo = await repoPath(),
+//   workflow = main_name.split("/").pop() + "-publish.yml";
 
 // 处理单个目标的初始化
 const initTarget = async (target) => {
