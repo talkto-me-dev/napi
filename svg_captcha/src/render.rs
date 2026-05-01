@@ -272,7 +272,7 @@ pub fn render(w: u32, h: u32, num: usize) -> Captcha {
         let d = wave_path(&points, w, h);
 
         let op = 0.2 + l as f32 * 0.1;
-        let sw = fastrand::u32(1..3);
+        let sw = fastrand::u32(3..6);
         let rotate = if l % 2 != 0 { 180 } else { 0 };
         let cx = w / 2;
         let cy = h / 2;
