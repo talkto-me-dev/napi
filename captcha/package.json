@@ -1,19 +1,22 @@
 {
-  "name": "@3-/_tmpl",
-  "version": "0.1.0",
+  "name": "@3-/captcha",
+  "version": "0.1.4",
   "description": "",
   "main": "index.js",
   "exports": {
-    ".": "./index.js"
+    ".": "./index.js",
+    "./verify": "./verify.js",
+    "./verify.js": "./verify.js"
   },
   "files": [
     "index.js",
-    "_tmpl.node"
+    "verify.js",
+    "captcha.node"
   ],
   "napi": {
-    "binaryName": "_tmpl",
+    "binaryName": "captcha",
     "package": {
-      "name": "@3-/_tmpl"
+      "name": "@3-/captcha"
     },
     "targets": [
       "aarch64-apple-darwin",
@@ -47,5 +50,15 @@
   "devDependencies": {
     "@napi-rs/cli": "^3.0.0",
     "vitest": "^3.0.7"
+  },
+  "optionalDependencies": {
+    "@3-/captcha-darwin-arm64": "0.1.4",
+    "@3-/captcha-darwin-x64": "0.1.4",
+    "@3-/captcha-linux-x64-gnu": "0.1.4",
+    "@3-/captcha-linux-arm64-gnu": "0.1.4",
+    "@3-/captcha-linux-x64-musl": "0.1.4",
+    "@3-/captcha-linux-arm64-musl": "0.1.4",
+    "@3-/captcha-win32-x64-msvc": "0.1.4",
+    "@3-/captcha-win32-arm64-msvc": "0.1.4"
   }
 }

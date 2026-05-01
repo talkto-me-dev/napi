@@ -1,6 +1,7 @@
 mod consts;
 mod error;
 mod render;
+#[cfg(feature = "verify")]
 mod verify;
 
 pub use consts::pattern::{PATTERNS, Pattern};
@@ -9,6 +10,7 @@ pub use consts::tmpl::FILTERS;
 pub use error::{Error, Result};
 
 pub use render::render as render_svg;
+#[cfg(feature = "verify")]
 pub use verify::verify;
 
 /// The generated CAPTCHA containing SVG and validation data.

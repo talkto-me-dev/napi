@@ -12,6 +12,11 @@ readme = "README.md"
 
 [features]
 default = []
+verify = []
+
+[[example]]
+name = "server"
+required-features = ["verify"]
 
 [package.metadata.docs.rs]
 all-features = true
