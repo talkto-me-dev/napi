@@ -2,7 +2,7 @@
 set -e
 
 # Build the native module
-npm run build:debug
+bun run build:debug
 
 # Run tests
-npm test
+bun run test
