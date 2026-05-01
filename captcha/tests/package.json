@@ -1,6 +1,6 @@
 {
   "type": "module",
   "dependencies": {
-    "@3-/captcha": "^0.1.17"
+    "@3-/captcha": "file:.."
   }
 }
