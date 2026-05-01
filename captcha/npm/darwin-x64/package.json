@@ -1,0 +1,23 @@
+{
+  "name": "@3-/captcha-darwin-x64",
+  "version": "0.1.14",
+  "os": [
+    "darwin"
+  ],
+  "cpu": [
+    "x64"
+  ],
+  "files": [
+    "captcha.darwin-x64.node"
+  ],
+  "description": "Native binary package for @3-/captcha-darwin-x64",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/talkto-me-dev/napi.git"
+  },
+  "license": "MulanPSL-2.0",
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "captcha.darwin-x64.node"
+}
