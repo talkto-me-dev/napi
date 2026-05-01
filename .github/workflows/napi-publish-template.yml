@@ -134,16 +134,20 @@ jobs:
           merge-multiple: true
 
       - name: Move artifacts
-        run: bun run artifacts
+        run: |
+          bun run artifacts
+          echo "Checking artifacts after move:"
+          ls -R npm/
         working-directory: ${{ inputs.working-directory }}
 
       - name: Publish NPM Package
         run: |
-          npm publish --provenance --access public
+          # Use --gh-release false to avoid "already_exists" error during retries
+          npm publish --provenance --access public -- --gh-release false
           for dir in npm/*; do
             if [ -d "$dir" ]; then
               echo "Publishing $dir..."
-              npm publish "$dir" --provenance --access public
+              npm publish "./$dir" --provenance --access public
             fi
           done
         env:
