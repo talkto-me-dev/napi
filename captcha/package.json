@@ -1,6 +1,6 @@
 {
   "name": "@3-/captcha",
-  "version": "0.1.36",
+  "version": "0.1.37",
   "description": "",
   "homepage": "https://github.com/talkto-me-dev/napi#readme",
   "bugs": {
@@ -36,14 +36,14 @@
     "vitest": "^3.0.7"
   },
   "optionalDependencies": {
-    "@3-/captcha-darwin-arm64": "0.1.36",
-    "@3-/captcha-darwin-x64": "0.1.36",
-    "@3-/captcha-linux-arm64-gnu": "0.1.36",
-    "@3-/captcha-linux-arm64-musl": "0.1.36",
-    "@3-/captcha-linux-x64-gnu": "0.1.36",
-    "@3-/captcha-linux-x64-musl": "0.1.36",
-    "@3-/captcha-win32-arm64-msvc": "0.1.36",
-    "@3-/captcha-win32-x64-msvc": "0.1.36"
+    "@3-/captcha-darwin-arm64": "0.1.37",
+    "@3-/captcha-darwin-x64": "0.1.37",
+    "@3-/captcha-linux-arm64-gnu": "0.1.37",
+    "@3-/captcha-linux-arm64-musl": "0.1.37",
+    "@3-/captcha-linux-x64-gnu": "0.1.37",
+    "@3-/captcha-linux-x64-musl": "0.1.37",
+    "@3-/captcha-win32-arm64-msvc": "0.1.37",
+    "@3-/captcha-win32-x64-msvc": "0.1.37"
   },
   "napi": {
     "binaryName": "captcha",
