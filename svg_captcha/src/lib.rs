@@ -39,6 +39,6 @@ pub struct Captcha {
 /// 生成指定宽度、高度和目标图标数量的验证码，并将其转换为 WebP。
 pub fn render(w: u32, h: u32, num: usize) -> Result<Captcha> {
     let mut captcha = render_svg(w, h, num);
-    captcha.webp = svg2webp::svg2webp(&captcha.svg)?;
+    captcha.webp = svg2webp::svg2webp(&captcha.svg, 70)?;
     Ok(captcha)
 }
