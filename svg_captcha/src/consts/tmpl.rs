@@ -1,17 +1,17 @@
 use std::fmt::Write;
 
 const FILTER_P1: &str = r##"<filter id="f_noise" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" seed=""##;
-const FILTER_P2: &str = r##"" result="noise"/><feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.35 0"/><feComposite operator="in" in2="SourceGraphic"/><feBlend mode="multiply" in2="SourceGraphic"/></filter><filter id="f_distort" x="-50%" y="-50%" width="200%" height="200%"><feTurbulence type="turbulence" baseFrequency="0.015" numOctaves="2" seed=""##;
-const FILTER_P3: &str = r##"" result="noise"/><feDisplacementMap in="SourceGraphic" in2="noise" scale="4" xChannelSelector="R" yChannelSelector="G"/></filter><filter id="f_glossy" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur in="SourceAlpha" stdDeviation="1.5" result="blur"/><feSpecularLighting in="blur" surfaceScale="5" specularConstant="1" specularExponent="40" lighting-color="#fff" result="spec"><fePointLight x="-50" y="-50" z="200"/></feSpecularLighting><feComposite in="spec" in2="SourceAlpha" operator="in" result="spec"/><feComposite in="SourceGraphic" in2="spec" operator="arithmetic" k1="0" k2="1" k3="1" k4="0"/></filter><filter id="f_shadow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur in="SourceAlpha" stdDeviation="2" result="blur"/><feOffset dx="2" dy="2" result="offsetBlur"/><feFlood flood-color="#000" flood-opacity="0.3" result="color"/><feComposite in="color" in2="offsetBlur" operator="in" result="shadow"/><feMerge><feMergeNode in="shadow"/><feMergeNode in="SourceGraphic"/></feMerge></filter>"##;
+const FILTER_P2: &str = r##"" result="noise"/><feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.35 0"/><feComposite operator="in" in2="SourceGraphic"/><feBlend mode="multiply" in2="SourceGraphic"/></filter><filter id="f_distort" x="-20%" y="-20%" width="140%" height="140%"><feTurbulence type="turbulence" baseFrequency="0.015" numOctaves="2" seed=""##;
+const FILTER_P3: &str = r##"" result="noise"/><feDisplacementMap in="SourceGraphic" in2="noise" scale="4" xChannelSelector="R" yChannelSelector="G"/></filter><filter id="f_glossy" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur in="SourceAlpha" stdDeviation="1.5" result="blur"/><feSpecularLighting in="blur" surfaceScale="5" specularConstant="1" specularExponent="40" lighting-color="#fff" result="spec"><fePointLight x="-50" y="-50" z="200"/></feSpecularLighting><feComposite in="spec" in2="SourceAlpha" operator="in" result="spec"/><feComposite in="SourceGraphic" in2="spec" operator="arithmetic" k1="0" k2="1" k3="1" k4="0"/></filter><filter id="f_shadow" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur in="SourceAlpha" stdDeviation="2" result="blur"/><feOffset dx="2" dy="2" result="offsetBlur"/><feFlood flood-color="#000" flood-opacity="0.3" result="color"/><feComposite in="color" in2="offsetBlur" operator="in" result="shadow"/><feMerge><feMergeNode in="shadow"/><feMergeNode in="SourceGraphic"/></feMerge></filter>"##;
 
 /// The complete FILTERS template (for external use).
 ///
 /// 完整的滤镜模板（供外部使用）。
 pub const FILTERS: &str = concat!(
     r##"<filter id="f_noise" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" seed="{seed}" result="noise"/><feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.35 0"/><feComposite operator="in" in2="SourceGraphic"/><feBlend mode="multiply" in2="SourceGraphic"/></filter>"##,
-    r##"<filter id="f_distort" x="-50%" y="-50%" width="200%" height="200%"><feTurbulence type="turbulence" baseFrequency="0.015" numOctaves="2" seed="{seed}" result="noise"/><feDisplacementMap in="SourceGraphic" in2="noise" scale="4" xChannelSelector="R" yChannelSelector="G"/></filter>"##,
-    r##"<filter id="f_glossy" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur in="SourceAlpha" stdDeviation="1.5" result="blur"/><feSpecularLighting in="blur" surfaceScale="5" specularConstant="1" specularExponent="40" lighting-color="#fff" result="spec"><fePointLight x="-50" y="-50" z="200"/></feSpecularLighting><feComposite in="spec" in2="SourceAlpha" operator="in" result="spec"/><feComposite in="SourceGraphic" in2="spec" operator="arithmetic" k1="0" k2="1" k3="1" k4="0"/></filter>"##,
-    r##"<filter id="f_shadow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur in="SourceAlpha" stdDeviation="2" result="blur"/><feOffset dx="2" dy="2" result="offsetBlur"/><feFlood flood-color="#000" flood-opacity="0.3" result="color"/><feComposite in="color" in2="offsetBlur" operator="in" result="shadow"/><feMerge><feMergeNode in="shadow"/><feMergeNode in="SourceGraphic"/></feMerge></filter>"##,
+    r##"<filter id="f_distort" x="-20%" y="-20%" width="140%" height="140%"><feTurbulence type="turbulence" baseFrequency="0.015" numOctaves="2" seed="{seed}" result="noise"/><feDisplacementMap in="SourceGraphic" in2="noise" scale="4" xChannelSelector="R" yChannelSelector="G"/></filter>"##,
+    r##"<filter id="f_glossy" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur in="SourceAlpha" stdDeviation="1.5" result="blur"/><feSpecularLighting in="blur" surfaceScale="5" specularConstant="1" specularExponent="40" lighting-color="#fff" result="spec"><fePointLight x="-50" y="-50" z="200"/></feSpecularLighting><feComposite in="spec" in2="SourceAlpha" operator="in" result="spec"/><feComposite in="SourceGraphic" in2="spec" operator="arithmetic" k1="0" k2="1" k3="1" k4="0"/></filter>"##,
+    r##"<filter id="f_shadow" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur in="SourceAlpha" stdDeviation="2" result="blur"/><feOffset dx="2" dy="2" result="offsetBlur"/><feFlood flood-color="#000" flood-opacity="0.3" result="color"/><feComposite in="color" in2="offsetBlur" operator="in" result="shadow"/><feMerge><feMergeNode in="shadow"/><feMergeNode in="SourceGraphic"/></feMerge></filter>"##,
 );
 
 pub fn filters(seed: u32) -> String {
@@ -65,7 +65,7 @@ pub fn wave(d: &str, op: f32, stroke: &str, sw: u32, rotate: i32, cx: u32, cy: u
 
 pub fn mask(id: &str, path: &str) -> String {
     format!(
-        r#"<mask id="{id}" x="-50%" y="-50%" width="200%" height="200%"><g fill="white" stroke="white" stroke-width="10" stroke-linecap="round" stroke-linejoin="round">{path}</g></mask>"#
+        r#"<mask id="{id}" x="-20%" y="-20%" width="140%" height="140%"><g fill="white" stroke="white" stroke-width="10" stroke-linecap="round" stroke-linejoin="round">{path}</g></mask>"#
     )
 }
 
@@ -85,7 +85,7 @@ pub fn icon_group(
     mask: &str,
 ) -> String {
     format!(
-        r#"<g filter="url(#{filter}) url(#f_distort)" transform="translate({px},{py}) rotate({rot},{half_sz},{half_sz}) skewX({sx}) skewY({sy})"><svg viewBox="{view}" width="{sz}" height="{sz}" opacity="{op}" overflow="visible"><rect x="-50%" y="-50%" width="200%" height="200%" fill="url(#{grad})" mask="url(#{mask})"/></svg></g>"#
+        r#"<g filter="url(#{filter})"><g filter="url(#f_distort)" transform="translate({px},{py}) rotate({rot},{half_sz},{half_sz}) skewX({sx}) skewY({sy})"><svg viewBox="{view}" width="{sz}" height="{sz}" opacity="{op}" overflow="visible"><rect x="-20%" y="-20%" width="140%" height="140%" fill="url(#{grad})" mask="url(#{mask})"/></svg></g></g>"#
     )
 }
 
