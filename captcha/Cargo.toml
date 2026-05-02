@@ -1,0 +1,28 @@
+[package]
+edition = "2024"
+name = "captcha"
+version = "0.1.42"
+description = "NAPI-RS project template"
+repository = "https://github.com/talkto-me-dev/napi"
+homepage = "https://github.com/talkto-me-dev/napi#readme"
+license = "MulanPSL-2.0"
+
+[lib]
+crate-type = [ "cdylib" ]
+
+[dependencies]
+thiserror = "2.0.18"
+napi-derive = "3"
+log = "0.4.29"
+
+[dependencies.svg_captcha]
+version = "0.1.14"
+path = "../svg_captcha"
+
+[dependencies.napi]
+version = "3"
+features = [ "napi10", "tokio_rt" ]
+default-features = false
+
+[build-dependencies]
+napi-build = "2"
