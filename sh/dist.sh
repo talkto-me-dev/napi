@@ -38,7 +38,7 @@ dist() {
   bun x cargo_upgrade
   rm -f Cargo.lock
   git add -u
-  gme $(cargo metadata --format-version=1 --no-deps | jq '.packages[] | .name + ":" + .version' -r | grep "$name:") || true
+  git commmit -m $(cargo metadata --format-version=1 --no-deps | jq '.packages[] | .name + ":" + .version' -r | grep "$name:") || true
 
 }
 
