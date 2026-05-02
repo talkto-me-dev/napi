@@ -15,7 +15,7 @@ thiserror = "2.0.18"
 napi-derive = "3"
 
 [dependencies.svg_captcha]
-version = "0.1.6"
+version = "0.1.7"
 path = "../svg_captcha"
 
 [dependencies.napi]
