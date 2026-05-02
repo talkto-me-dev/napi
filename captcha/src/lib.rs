@@ -2,10 +2,10 @@
 
 mod error;
 
-use error::Error;
+use error::{Error, Result as InternalResult};
 use napi::bindgen_prelude::Uint8Array;
 use napi::tokio::task::spawn_blocking;
-use napi::{Error as NapiError, Result};
+use napi::{Error as NapiError, Result as NapiResult};
 use napi_derive::napi;
 
 const MAX_RETRIES: usize = 9;
@@ -18,7 +18,7 @@ pub async fn captcha(
     w: u32,
     h: u32,
     num: u32,
-) -> Result<(Uint8Array, Vec<&'static str>, Vec<[i32; 3]>)> {
+) -> NapiResult<(Uint8Array, Vec<&'static str>, Vec<[i32; 3]>)> {
     let mut last_error = None;
 
     for attempt in 1..=MAX_RETRIES {
@@ -43,19 +43,21 @@ pub async fn captcha(
         }
     }
 
-    Err(last_error.unwrap_or_else(|| NapiError::from_reason("Failed to generate captcha after retries")))
+    Err(last_error
+        .unwrap_or_else(|| NapiError::from_reason("Failed to generate captcha after retries")))
 }
 
-async fn perform_render(w: u32, h: u32, num: u32) -> Result<svg_captcha::Captcha> {
-    spawn_blocking(move || {
-        svg_captcha::render(w, h, num as usize).map_err(|e| NapiError::from(Error::from(e)))
-    })
-    .await
-    .map_err(|e| {
-        if e.is_panic() {
-            NapiError::from_reason("SVG rendering panicked")
-        } else {
-            NapiError::from_reason(format!("Task execution error: {e}"))
-        }
-    })?
+/// Internal rendering logic executed in a blocking task.
+///
+/// 在阻塞任务中执行的内部渲染逻辑。
+async fn perform_render(w: u32, h: u32, num: u32) -> InternalResult<svg_captcha::Captcha> {
+    spawn_blocking(move || svg_captcha::render(w, h, num as usize).map_err(Error::from))
+        .await
+        .map_err(|e| {
+            if e.is_panic() {
+                Error::Panic
+            } else {
+                Error::Task(format!("{e}"))
+            }
+        })?
 }
