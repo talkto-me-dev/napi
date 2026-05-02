@@ -3,9 +3,9 @@
 mod error;
 
 use error::{Error, Result as InternalResult};
+use napi::Result as NapiResult;
 use napi::bindgen_prelude::Uint8Array;
 use napi::tokio::task::spawn_blocking;
-use napi::{Error as NapiError, Result as NapiResult};
 use napi_derive::napi;
 
 const MAX_RETRIES: usize = 9;
@@ -44,7 +44,8 @@ pub async fn captcha(
     }
 
     Err(last_error
-        .unwrap_or_else(|| NapiError::from_reason("Failed to generate captcha after retries")))
+        .unwrap_or_else(|| Error::Task("Failed to generate captcha after retries".to_string()))
+        .into())
 }
 
 /// Internal rendering logic executed in a blocking task.

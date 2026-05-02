@@ -1,3 +1,4 @@
+use std::result;
 use thiserror::Error;
 
 #[derive(Debug, Error)]
@@ -12,7 +13,7 @@ pub enum Error {
     Panic,
 }
 
-pub type Result<T> = std::result::Result<T, Error>;
+pub type Result<T> = result::Result<T, Error>;
 
 impl From<Error> for napi::Error {
     fn from(err: Error) -> Self {
