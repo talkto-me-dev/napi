@@ -128,8 +128,8 @@ const parse = (d) => {
             let rx = Math.abs(args[i]),
               ry = Math.abs(args[i + 1]),
               phi_deg = args[i + 2],
-              fA = args[i + 3],
-              fS = args[i + 4],
+              f_a = args[i + 3],
+              f_s = args[i + 4],
               next_x = type === "A" ? args[i + 5] : curr_x + args[i + 5],
               next_y = type === "A" ? args[i + 6] : curr_y + args[i + 6];
 
@@ -141,13 +141,13 @@ const parse = (d) => {
             }
 
             let phi = (phi_deg * Math.PI) / 180,
-              cosPhi = Math.cos(phi),
-              sinPhi = Math.sin(phi),
-              dx2 = (curr_x - next_x) / 2,
-              dy2 = (curr_y - next_y) / 2,
-              x1p = cosPhi * dx2 + sinPhi * dy2,
-              y1p = -sinPhi * dx2 + cosPhi * dy2,
-              lambda = (x1p * x1p) / (rx * rx) + (y1p * y1p) / (ry * ry);
+              cos_phi = Math.cos(phi),
+              sin_phi = Math.sin(phi),
+              dx_2 = (curr_x - next_x) / 2,
+              dy_2 = (curr_y - next_y) / 2,
+              x_1_p = cos_phi * dx_2 + sin_phi * dy_2,
+              y_1_p = -sin_phi * dx_2 + cos_phi * dy_2,
+              lambda = (x_1_p * x_1_p) / (rx * rx) + (y_1_p * y_1_p) / (ry * ry);
 
             if (lambda > 1) {
               let factor = Math.sqrt(lambda);
@@ -155,21 +155,21 @@ const parse = (d) => {
               ry *= factor;
             }
 
-            let num = rx * rx * ry * ry - rx * rx * y1p * y1p - ry * ry * x1p * x1p,
-              den = rx * rx * y1p * y1p + ry * ry * x1p * x1p,
-              C = Math.sqrt(Math.max(0, num / den));
-            if (fA === fS) C = -C;
+            let num = rx * rx * ry * ry - rx * rx * y_1_p * y_1_p - ry * ry * x_1_p * x_1_p,
+              den = rx * rx * y_1_p * y_1_p + ry * ry * x_1_p * x_1_p,
+              c = Math.sqrt(Math.max(0, num / den));
+            if (f_a === f_s) c = -c;
 
-            let cxp = C * ((rx * y1p) / ry),
-              cyp = C * (-(ry * x1p) / rx),
-              cx = cosPhi * cxp - sinPhi * cyp + (curr_x + next_x) / 2,
-              cy = sinPhi * cxp + cosPhi * cyp + (curr_y + next_y) / 2,
-              deltaX = Math.sqrt((rx * cosPhi) ** 2 + (ry * sinPhi) ** 2),
-              deltaY = Math.sqrt((rx * sinPhi) ** 2 + (ry * cosPhi) ** 2);
+            let cx_p = c * ((rx * y_1_p) / ry),
+              cy_p = c * (-(ry * x_1_p) / rx),
+              cx = cos_phi * cx_p - sin_phi * cy_p + (curr_x + next_x) / 2,
+              cy = sin_phi * cx_p + cos_phi * cy_p + (curr_y + next_y) / 2,
+              delta_x = Math.sqrt((rx * cos_phi) ** 2 + (ry * sin_phi) ** 2),
+              delta_y = Math.sqrt((rx * sin_phi) ** 2 + (ry * cos_phi) ** 2);
 
             pts.push(
-              [cx - deltaX, cy - deltaY],
-              [cx + deltaX, cy + deltaY],
+              [cx - delta_x, cy - delta_y],
+              [cx + delta_x, cy + delta_y],
               [next_x, next_y],
             );
 
@@ -201,7 +201,7 @@ export const resize = (path) => {
     clean_data = next;
   }
 
-  const result = optimize(clean_data, {
+  const { data: optimized } = optimize(clean_data, {
     path,
     multipass: true,
     plugins: [
@@ -220,43 +220,56 @@ export const resize = (path) => {
     ],
   });
 
-  let optimized = result.data,
-    all_pts = [],
+  let all_pts = [],
     max_stroke = 0;
 
   const stroke_widths = optimized.match(/stroke-width="([^"]+)"/g);
   if (stroke_widths) {
-    max_stroke = Math.max(
-      ...stroke_widths.map((s) => {
-        const val = Number(s.match(/stroke-width="([^"]+)"/)[1]);
-        return isNaN(val) ? 0 : val;
-      }),
-    );
+    for (let i = 0, len = stroke_widths.length; i < len; ++i) {
+      const val = Number(stroke_widths[i].match(/stroke-width="([^"]+)"/)[1]);
+      if (!isNaN(val) && val > max_stroke) max_stroke = val;
+    }
   }
 
   const d_matches = optimized.match(/d="([^"]+)"/g);
   if (d_matches) {
-    d_matches.forEach((m) => {
-      const d = m.match(/d="([^"]+)"/)[1];
+    for (let i = 0, len = d_matches.length; i < len; ++i) {
+      const d = d_matches[i].match(/d="([^"]+)"/)[1];
       all_pts.push(...parse(d));
-    });
+    }
   }
 
   const circle_matches = optimized.match(/<circle[^>]+>/g);
   if (circle_matches) {
-    circle_matches.forEach((m) => {
-      const cx = Number(m.match(/cx="([^"]+)"/)?.[1] || 0),
+    for (let i = 0, len = circle_matches.length; i < len; ++i) {
+      const m = circle_matches[i],
+        cx = Number(m.match(/cx="([^"]+)"/)?.[1] || 0),
         cy = Number(m.match(/cy="([^"]+)"/)?.[1] || 0),
         r = Number(m.match(/r="([^"]+)"/)?.[1] || 0);
       all_pts.push([cx - r, cy - r], [cx + r, cy + r]);
-    });
+    }
   }
 
   if (all_pts.length > 0) {
-    let min_x = Math.min(...all_pts.map((p) => p[0])) - max_stroke / 2,
-      max_x = Math.max(...all_pts.map((p) => p[0])) + max_stroke / 2,
-      min_y = Math.min(...all_pts.map((p) => p[1])) - max_stroke / 2,
-      max_y = Math.max(...all_pts.map((p) => p[1])) + max_stroke / 2;
+    let min_x = Infinity,
+      max_x = -Infinity,
+      min_y = Infinity,
+      max_y = -Infinity;
+
+    for (let i = 0, len = all_pts.length; i < len; ++i) {
+      const p = all_pts[i],
+        x = p[0],
+        y = p[1];
+      if (x < min_x) min_x = x;
+      if (x > max_x) max_x = x;
+      if (y < min_y) min_y = y;
+      if (y > max_y) max_y = y;
+    }
+
+    min_x -= max_stroke / 2;
+    max_x += max_stroke / 2;
+    min_y -= max_stroke / 2;
+    max_y += max_stroke / 2;
 
     const width = max_x - min_x,
       height = max_y - min_y;
