@@ -4,6 +4,7 @@ pub mod metaballs;
 pub mod oil_painting;
 pub mod ribbon;
 pub mod warp;
+pub mod watercolor;
 
 use tiny_skia::Pixmap;
 
@@ -17,6 +18,7 @@ pub(crate) fn apply_all(pixmap: &mut Pixmap) {
 
     // 1. 底层纹理与光影 (Base Texture & Lighting)
     oil_painting::apply(data, w, h, &mut rng); // 印象派打底
+    watercolor::apply(data, w, h, &mut rng); // 水彩晕染（破坏边缘）
     cinematic::apply(data, w, h, &mut rng); // 光影暗角
 
     // 3. 全局空间扭曲 (Global Spatial Distortion)
