@@ -16,7 +16,7 @@ napi-derive = "3"
 log = "0.4.29"
 
 [dependencies.svg_captcha]
-version = "0.1.20"
+version = "0.1.21"
 path = "../svg_captcha"
 
 [dependencies.napi]
