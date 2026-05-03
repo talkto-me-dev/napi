@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SVG 验证码演示</title>
+    <style>
+      body {
+        font-family:
+          system-ui,
+          -apple-system,
+          sans-serif;
+        background: #f5f5f5;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+      }
+    </style>
+    <link rel="stylesheet" href="/captcha.css" />
+  </head>
+  <body>
+    <div id="captcha-demo"></div>
+
+    <script type="module">
+      import render from "/captcha.js";
+
+      const root = document.getElementById("captcha-demo");
+      render(root, () => {
+        alert("验证成功!");
+      });
+    </script>
+  </body>
+</html>
