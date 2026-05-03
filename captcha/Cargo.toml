@@ -1,7 +1,7 @@
 [package]
 edition = "2024"
 name = "captcha"
-version = "0.1.44"
+version = "0.1.45"
 description = "NAPI-RS project template"
 repository = "https://github.com/talkto-me-dev/napi"
 homepage = "https://github.com/talkto-me-dev/napi#readme"
@@ -16,7 +16,7 @@ napi-derive = "3"
 log = "0.4.29"
 
 [dependencies.svg_captcha]
-version = "0.1.16"
+version = "0.1.17"
 path = "../svg_captcha"
 
 [dependencies.napi]
