@@ -96,8 +96,8 @@ pub const SVGS: &[SvgIcon] = &[
     ),
     icon(
         "0 0 1024 1024",
-        "<g fill=\"none\" stroke=\"inherit\" transform=\"translate(-159.831 -235.937)scale(1.312)\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"120\" d=\"M194 830a450 450 0 1 1 636 0q-318-280-636 0\"/><circle cx=\"340\" cy=\"380\" r=\"70\" stroke-width=\"80\"/><circle cx=\"684\" cy=\"380\" r=\"70\" stroke-width=\"80\"/></g>",
-        "<svg viewBox=\"0 0 1024 1024\"><g fill=\"none\" stroke=\"#000\" transform=\"translate(-159.831 -235.937)scale(1.312)\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"120\" d=\"M194 830a450 450 0 1 1 636 0q-318-280-636 0\"/><circle cx=\"340\" cy=\"380\" r=\"70\" stroke-width=\"80\"/><circle cx=\"684\" cy=\"380\" r=\"70\" stroke-width=\"80\"/></g></svg>",
+        "<g fill=\"none\" stroke=\"inherit\" transform=\"translate(14.055 14.44)scale(.973)\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"120\" d=\"M194 830a450 450 0 1 1 636 0q-318-280-636 0\"/><circle cx=\"340\" cy=\"380\" r=\"70\" stroke-width=\"80\"/><circle cx=\"684\" cy=\"380\" r=\"70\" stroke-width=\"80\"/></g>",
+        "<svg viewBox=\"0 0 1024 1024\"><g fill=\"none\" stroke=\"#000\" transform=\"translate(14.055 14.44)scale(.973)\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"120\" d=\"M194 830a450 450 0 1 1 636 0q-318-280-636 0\"/><circle cx=\"340\" cy=\"380\" r=\"70\" stroke-width=\"80\"/><circle cx=\"684\" cy=\"380\" r=\"70\" stroke-width=\"80\"/></g></svg>",
     ),
     icon(
         "0 0 1024 1024",

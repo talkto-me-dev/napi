@@ -123,17 +123,58 @@ const parse = (d) => {
           }
           break;
         case "A":
-          for (let i = 0; i < args.length; i += 7) {
-            curr_x = args[i + 5];
-            curr_y = args[i + 6];
-            pts.push([curr_x, curr_y]);
-          }
-          break;
         case "a":
           for (let i = 0; i < args.length; i += 7) {
-            curr_x += args[i + 5];
-            curr_y += args[i + 6];
-            pts.push([curr_x, curr_y]);
+            let rx = Math.abs(args[i]),
+              ry = Math.abs(args[i + 1]),
+              phi_deg = args[i + 2],
+              fA = args[i + 3],
+              fS = args[i + 4],
+              next_x = type === "A" ? args[i + 5] : curr_x + args[i + 5],
+              next_y = type === "A" ? args[i + 6] : curr_y + args[i + 6];
+
+            if (rx === 0 || ry === 0) {
+              curr_x = next_x;
+              curr_y = next_y;
+              pts.push([curr_x, curr_y]);
+              continue;
+            }
+
+            let phi = (phi_deg * Math.PI) / 180,
+              cosPhi = Math.cos(phi),
+              sinPhi = Math.sin(phi),
+              dx2 = (curr_x - next_x) / 2,
+              dy2 = (curr_y - next_y) / 2,
+              x1p = cosPhi * dx2 + sinPhi * dy2,
+              y1p = -sinPhi * dx2 + cosPhi * dy2,
+              lambda = (x1p * x1p) / (rx * rx) + (y1p * y1p) / (ry * ry);
+
+            if (lambda > 1) {
+              let factor = Math.sqrt(lambda);
+              rx *= factor;
+              ry *= factor;
+            }
+
+            let num = rx * rx * ry * ry - rx * rx * y1p * y1p - ry * ry * x1p * x1p,
+              den = rx * rx * y1p * y1p + ry * ry * x1p * x1p,
+              C = Math.sqrt(Math.max(0, num / den));
+            if (fA === fS) C = -C;
+
+            let cxp = C * ((rx * y1p) / ry),
+              cyp = C * (-(ry * x1p) / rx),
+              cx = cosPhi * cxp - sinPhi * cyp + (curr_x + next_x) / 2,
+              cy = sinPhi * cxp + cosPhi * cyp + (curr_y + next_y) / 2,
+              deltaX = Math.sqrt((rx * cosPhi) ** 2 + (ry * sinPhi) ** 2),
+              deltaY = Math.sqrt((rx * sinPhi) ** 2 + (ry * cosPhi) ** 2);
+
+            pts.push(
+              [cx - deltaX, cy - deltaY],
+              [cx + deltaX, cy + deltaY],
+              [next_x, next_y],
+            );
+
+            curr_x = next_x;
+            curr_y = next_y;
           }
           break;
         case "Z":
