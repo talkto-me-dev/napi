@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <g transform="translate(14.055, 14.055) scale(0.973)">
+    <circle cx="512" cy="512" r="450" fill="none" stroke="#000" stroke-width="120"/><circle cx="340" cy="380" r="70" fill="none" stroke="#000" stroke-width="80"/><circle cx="684" cy="380" r="70" fill="none" stroke="#000" stroke-width="80"/><ellipse cx="512" cy="720" fill="none" stroke="#000" stroke-width="80" rx="120" ry="160"/>
+  </g>
+</svg>

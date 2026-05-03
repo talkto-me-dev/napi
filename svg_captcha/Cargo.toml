@@ -1,0 +1,52 @@
+[package]
+name = "svg_captcha"
+version = "0.1.17"
+edition = "2024"
+license = "MulanPSL-2.0"
+repository = "https://github.com/talkto-me-dev/napi.git"
+homepage = "https://github.com/talkto-me-dev/napi/tree/dev/svg_captcha"
+description = "High performance SVG captcha generator / 高性能 SVG 验证码生成器"
+keywords = ["svg", "captcha", "generator", "webp", "verification"]
+categories = ["multimedia::images", "web-programming", "cryptography", "rendering", "encoding"]
+readme = "README.md"
+
+[features]
+default = []
+verify = []
+
+[[example]]
+name = "server"
+required-features = ["verify"]
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]
+
+[dependencies]
+bytemuck = "1.25.0"
+fastrand = "2.4.1"
+itoa = "1.0.18"
+resvg = "0.47.0"
+ryu = "1.0.23"
+simd_aligned = "0.6.1"
+thiserror = "2.0.18"
+tiny-skia = "0.12.0"
+usvg = "0.47.0"
+zenwebp = { version = "0.4.5", features = ["fast-yuv"] }
+
+[dev-dependencies]
+aok = "0.1.18"
+axum = "0.8.9"
+criterion = "0.8.2"
+log = "0.4.29"
+log_init = "0.1.34"
+papaya = "0.2.4"
+rmp-serde = "1.3.1"
+serde = { version = "1.0.228", features = ["derive"] }
+static_init = "1.0.4"
+tokio = { version = "1.52.1", features = ["macros", "rt-multi-thread"] }
+tower-http = { version = "0.6.8", features = ["fs"] }
+
+[[bench]]
+name = "bench"
+harness = false
