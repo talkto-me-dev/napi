@@ -1,0 +1,18 @@
+name: Publish @3-/captcha
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "captcha@*"
+
+permissions:
+  contents: write
+  id-token: write
+
+jobs:
+  napi-publish:
+    uses: ./.github/workflows/napi-publish-template.yml
+    secrets: inherit
+    with:
+      working-directory: "captcha"
