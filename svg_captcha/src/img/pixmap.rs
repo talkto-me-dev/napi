@@ -79,4 +79,31 @@ fn apply_filters(pixmap: &mut Pixmap) {
             }
         }
     }
+
+    // 4. 模拟 CRT 显像管波浪扭曲 (Sine Wave Warp)
+    // 采用预计算查表法 (LUT)，0 浮点运算，让图像产生如同水波或老电视机的流体扭曲感，破坏 AI 的直线与包围盒特征
+    let amp = rng.i32(2..5); // 扭曲幅度：2 到 4 像素
+    if amp > 0 {
+        let phase = rng.usize(0..256);
+        let freq_shift = rng.usize(0..2); // 决定波浪的密集程度
+
+        // 构建 256 长度的正弦波 LUT
+        let mut sin_lut = [0i32; 256];
+        for i in 0..256 {
+            sin_lut[i] = ((i as f32 * std::f32::consts::PI / 128.0).sin() * amp as f32) as i32;
+        }
+
+        for y in 0..h {
+            let offset = sin_lut[((y << freq_shift) + phase) % 256];
+            if offset != 0 {
+                let row_start = y * w * 4;
+                let shift_bytes = (offset.unsigned_abs() as usize) * 4;
+                if offset > 0 {
+                    data[row_start..row_start + w * 4].rotate_right(shift_bytes);
+                } else {
+                    data[row_start..row_start + w * 4].rotate_left(shift_bytes);
+                }
+            }
+        }
+    }
 }
